@@ -105,6 +105,11 @@ int main()
 				i++;
 				comments++;
 		}
+		if((input[i]>=65 && input[i]<=90 || input[i]>=97 && input[i]<=122)||(input[i]>=48 && input[i]<=57)||(input[i]=='.'))
+		{
+			if(flag==1)
+			buffer[k++]=input[i];
+		}
 		else if(checkSeperator(input[i],ss) && k!=0)
 		{
 			buffer[k]='\0';
@@ -115,11 +120,6 @@ int main()
 			else if(isConstant(buffer))
 				printf("<%s, constant>\n",buffer);
 			k=0;
-		}
-		if((input[i]>=65 && input[i]<=90 || input[i]>=97 && input[i]<=122)||(input[i]>=48 && input[i]<=57)||(input[i]=='.'))
-		{
-			if(flag==1)
-			buffer[k++]=input[i];
 		}
 		if(input[i]==34)
 		{
