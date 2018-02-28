@@ -1,0 +1,6 @@
+void main()
+{
+	int a = 103.2;
+	int b = a%109;
+	printf("b=%d",a);
+}
