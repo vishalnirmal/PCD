@@ -66,28 +66,48 @@ int checkSeperator(char ch,char sep[])
 	}
 	return 0;
 }
+int checkConsecutive(char* input,int i)
+{
+	if(input[i]=='='&&input[i+1]=='=')
+		return 1;
+	if(input[i]=='!'&&input[i+1]=='=')
+		return 1;
+	if(input[i]=='>'&&input[i+1]=='=')
+		return 1;
+	if(input[i]=='<'&&input[i+1]=='=')
+		return 1;
+	if(input[i]=='>'&&input[i+1]=='>')
+		return 1;
+	if(input[i]=='<'&&input[i+1]=='<')
+		return 1;
+	if(input[i]=='|'&&input[i+1]=='|')
+		return 1;
+	if(input[i]=='&'&&input[i+1]=='&')
+		return 1;
+	if(input[i]=='+'&&input[i+1]=='+')
+		return 1;
+	if(input[i]=='-'&&input[i+1]=='-')
+		return 1;
+	return 0;
+}
 int main()
 {
 	char input[10000],buffer[100];
-	char ss[]="+-*/%^&|=,;()[]{}><\'\"";
+	char ss[]="+-*/%^&|=,;()[]{}><\'\"\"\'";
 	int l = accept(input);
 	int i,j,k=0,n,flag=1,comments=0,string=0;;
 	for (i = 0; i < l; ++i)
 	{
 		if(input[i]=='\n')
 			flag=1;
-		if((input[i]>=65 && input[i]<=90 || input[i]>=97 && input[i]<=122)||(input[i]>=48 && input[i]<=57)||(input[i]=='.'))
-		{
-			if(flag==1)
-			buffer[k++]=input[i];
+		if(input[i]=='/' && input[i+1]=='/'){
+				flag=0;
+				i++;
+				comments++;
 		}
 		else if(checkSeperator(input[i],ss) && k!=0)
 		{
 			buffer[k]='\0';
-			if(input[i]=='/' && input[i+1]=='/'){
-				flag=0;
-				comments++;
-			}
 			if(isKeyword(buffer))
 				printf("<%s, keyword>\n",buffer);
 			else if(checkIdentifier(buffer))
@@ -96,12 +116,51 @@ int main()
 				printf("<%s, constant>\n",buffer);
 			k=0;
 		}
+		if((input[i]>=65 && input[i]<=90 || input[i]>=97 && input[i]<=122)||(input[i]>=48 && input[i]<=57)||(input[i]=='.'))
+		{
+			if(flag==1)
+			buffer[k++]=input[i];
+		}
+		if(input[i]==34)
+		{
+			printf("<%c, symbol>\n", input[i]);
+			char buf[1000];
+			int counter=0;
+			i++;
+			while(input[i]!='\"'){
+				buf[counter++]=input[i++];
+			}
+			buf[counter]='\0';
+			printf("<%s, constant>\n", buf);
+		}
+		if(input[i]=='\'')
+		{
+			printf("<%c, symbol>\n", input[i]);
+			char buf[1000];
+			int counter=0;
+			i++;
+			while(input[i]!='\''){
+				buf[counter++]=input[i++];
+			}
+			buf[counter]='\0';
+			printf("<%s, constant>\n", buf);
+		}
+		if(checkSeperator(input[i],ss) && checkConsecutive(input,i))
+		{
+			char temp[3];
+			temp[0]=input[i];
+			temp[1]=input[++i];
+			temp[2]='\0';
+			printf("<%s, symbol>\n", temp);
+		}
+		else{
 		for(j=0;j<strlen(ss);j++)
 		{
 			if(input[i]==ss[j] && flag==1){
 				printf("<%c , symbol>\n", ss[j]);
 				break;
 			}
+		}
 		}
 	}
 	printf("No. of comments: %d",comments);
