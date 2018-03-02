@@ -4,7 +4,7 @@ int accept(char bf[])
 {
 	FILE *fp;
 	int i=0;
-	fp=fopen("read.txt","r");
+	fp=fopen("hello.c","r");
 	while(!feof(fp))
 	{
 		fscanf(fp,"%c",&bf[i++]);
